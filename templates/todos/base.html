@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TO-DO DJANGO APP</title>
+  <meta name="description" content="Todo Djnago Application">
+  <meta name="author" content="MW">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+<nav>
+	<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link active" href="{% url 'todos:index' %}">Home</a>
+  </li>
+
+  {% if user.is_authenticated %}
+  <li class="nav-item">Hi, {{ user.username }}</li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'admin:index'%}">Admin</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'todos:user_logout'%}">Logout</a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'todos:user_login'%}">Login</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" href="{% url 'todos:register' %}">Register</a>
+  </li>
+  {% endif %}
+</ul>
+</nav>
+<div class="container">
+{% block body_block %}
+
+{% endblock %}
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
