@@ -1,12 +1,50 @@
 from django.shortcuts import render
-from todos.forms import UserForm, UserProfileInfo 
-from django.urls import reverse
+from todos.forms import UserForm, UserProfileInfo, TodoForm
+from todos.models import Task
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.views.generic import ListView, DeleteView, DetailView, UpdateView
 
+@login_required
 def index(request):
 	return render(request, 'todos/index.html')
+
+@login_required
+def todos_poster(request):
+    if request.method == 'POST':
+    	item = Task(author=request.user)
+    	form = TodoForm(data=request.POST, instance=item)
+
+    	if form.is_valid():
+    		form.save()
+
+    	else:
+    		print(form.errors)
+
+    	return HttpResponseRedirect(reverse('todos:index'))
+
+    else:
+    	form = TodoForm()
+    return render(request,'todos/todo_post.html', {'form': form})
+
+class TaskList(ListView):
+	model = Task
+	template_name = 'todos/task_list.html'
+
+class TaskDetail(DetailView):
+	model = Task
+	template_name = 'todos/task_detail.html'
+
+class TaskUpdate(UpdateView):
+	model = Task
+	fields = ['title', 'description']
+	success_url = reverse_lazy('todos:index')
+
+class TaskDelete(DeleteView):
+	model = Task
+	success_url = reverse_lazy('todos:index')
 
 def register(request):
 

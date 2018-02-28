@@ -1,0 +1,19 @@
+{% extends "todos/base.html" %}
+{% block body_block %}
+<div class="wrapper">
+<h4>TO-DO LIST</h4>
+<ul class="list-task">
+    {% for task in object_list %}
+        {% if task.author == request.user %}
+            <li class="list-task-item">
+            	<span class="task-name"><a href="{% url 'todos:detail_todo' task.id %}">{{ task.title }}</a></span>
+            	<span class="task-attr">
+	            	<span class="update"><a href="{% url 'todos:update_todo' task.id %}"><i class="fas fa-edit"></i></a></span>
+	            	<span class="delete"><a href="{% url 'todos:delete_todo' task.id %}"><i class="fas fa-trash-alt"></i></a></span>
+            	</span>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+</div>
+{% endblock %}
